@@ -27,7 +27,8 @@ class Word(models.Model):
     def __unicode__(self):
         return self.source
 class JapaneseWord(Word):
-    kanji=models.CharField(max_length=200, blank=True, verbose_name="Từ Kanji")
+    kanji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Từ Kanji")
+    romaji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Phiên âm Latinh")
     type=models.BooleanField(default=True, choices=JAPANESE_WORD_TYPE, verbose_name="Loại từ", blank=False)
 class TestWord(models.Model):
     title=models.CharField(max_length=200, null=True, verbose_name="Tiêu đề best")
@@ -37,3 +38,23 @@ class TestWord(models.Model):
     created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
     user=models.ForeignKey(User, verbose_name="Người tạo")
     active=models.CharField(max_length=2, choices=STATUS, default='Y', verbose_name="Trạng thái")
+class TestSession(models.Model):
+    test_word=models.ForeignKey(TestWord, verbose_name="Bài test")
+    current_word=models.ForeignKey(Word, verbose_name="Từ đang test")
+    start=models.DateTimeField(null=True, blank=True, verbose_name="Bắt ")
+    end=models.DateTimeField(null=True, blank=True, verbose_name="Kết thúc")
+    created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
+    user=models.ForeignKey(User, verbose_name="Người tạo")
+class WordTesting(models.Model):
+    test_session=models.ForeignKey(TestSession, verbose_name="Phiên test")
+    word=models.ForeignKey(Word, verbose_name="Từ")
+    start=models.DateTimeField(null=True, blank=True, verbose_name="Bắt ")
+    end=models.DateTimeField(null=True, blank=True, verbose_name="Kết thúc")
+    correct=models.BooleanField(blank=True, verbose_name="Chính xác")
+    complete=models.BooleanField(default=False, verbose_name="Hoàn thành")
+class TestResult(models.Model):
+    test_session=models.ForeignKey(TestSession, verbose_name="Phiên test")
+    correct=models.PositiveSmallIntegerField(validators =[MinValueValidator(0)], verbose_name="Số câu đúng")
+    incorrect=models.PositiveSmallIntegerField(validators =[MinValueValidator(0)], verbose_name="Số câu sai")
+    break_words=models.PositiveSmallIntegerField(validators =[MinValueValidator(0)], verbose_name="Số bỏ qua")
+    created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")

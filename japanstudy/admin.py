@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Tag, JapaneseWord, TestWord
+from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, WordTesting
 from django.utils import timezone
 
 class BaseAdmin(admin.ModelAdmin):
@@ -44,3 +44,6 @@ class TestWordAdmin(BaseAdmin):
 admin.site.register(Tag, TagAdmin)
 admin.site.register(JapaneseWord, JapaneseWordAdmin)
 admin.site.register(TestWord, TestWordAdmin)
+admin.site.register(TestResult)
+admin.site.register(TestSession)
+admin.site.register(WordTesting)
