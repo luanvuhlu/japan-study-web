@@ -31,20 +31,24 @@ class JapaneseWord(Word):
     romaji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Phiên âm Latinh")
     type=models.BooleanField(default=True, choices=JAPANESE_WORD_TYPE, verbose_name="Loại từ", blank=False)
 class TestWord(models.Model):
-    title=models.CharField(max_length=200, null=True, verbose_name="Tiêu đề best")
+    title=models.CharField(max_length=200, blank=False, verbose_name="Tiêu đề best")
     words=models.ManyToManyField(Word, blank=False, verbose_name="Gồm các từ")
     start_date=models.DateTimeField(null=True, blank=True, verbose_name="Ngày bắt đầu")
     completed_time=models.DateTimeField(null=True, blank=True, verbose_name="Ngày hoàn thành")
     created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
     user=models.ForeignKey(User, verbose_name="Người tạo")
     active=models.CharField(max_length=2, choices=STATUS, default='Y', verbose_name="Trạng thái")
+    def __unicode__(self):
+        return self.title
 class TestSession(models.Model):
     test_word=models.ForeignKey(TestWord, verbose_name="Bài test")
-    current_word=models.ForeignKey(Word, verbose_name="Từ đang test")
+    current_word=models.ForeignKey(Word, null=True, blank=True, verbose_name="Từ đang test")
     start=models.DateTimeField(null=True, blank=True, verbose_name="Bắt ")
     end=models.DateTimeField(null=True, blank=True, verbose_name="Kết thúc")
     created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
     user=models.ForeignKey(User, verbose_name="Người tạo")
+    def __unicode__(self):
+        return self.test_word.__str__() or u''
 class WordTesting(models.Model):
     test_session=models.ForeignKey(TestSession, verbose_name="Phiên test")
     word=models.ForeignKey(Word, verbose_name="Từ")
@@ -52,9 +56,13 @@ class WordTesting(models.Model):
     end=models.DateTimeField(null=True, blank=True, verbose_name="Kết thúc")
     correct=models.BooleanField(blank=True, verbose_name="Chính xác")
     complete=models.BooleanField(default=False, verbose_name="Hoàn thành")
+    def __unicode__(self):
+        return unicode(self.word) or u''
 class TestResult(models.Model):
     test_session=models.ForeignKey(TestSession, verbose_name="Phiên test")
     correct=models.PositiveSmallIntegerField(validators =[MinValueValidator(0)], verbose_name="Số câu đúng")
     incorrect=models.PositiveSmallIntegerField(validators =[MinValueValidator(0)], verbose_name="Số câu sai")
     break_words=models.PositiveSmallIntegerField(validators =[MinValueValidator(0)], verbose_name="Số bỏ qua")
     created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
+    def __unicode__(self):
+        return self.test_session.__str__() or u''

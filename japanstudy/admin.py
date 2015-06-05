@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*- 
 from django.contrib import admin
 from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, WordTesting
-from django.utils import timezone
 
 class BaseAdmin(admin.ModelAdmin):
     def delete_model(self, request, obj):
@@ -30,7 +30,7 @@ class TagAdmin(BaseAdmin):
         obj.save()
 
 class TestWordAdmin(BaseAdmin):
-    list_display=('start_date', 'completed_time')
+    list_display=('title', 'start_date', 'completed_time')
     readonly_fields=('user', 'created_time')
     date_hierarchy='created_time'
     list_filter=('created_time', )
@@ -39,11 +39,34 @@ class TestWordAdmin(BaseAdmin):
         if not obj.id:
             obj.user=request.user
         obj.save()
+class TestResultAdmin(BaseAdmin):
+    list_display=('test_session', 'correct', 'incorrect', 'break_words', 'created_time')
+    readonly_fields=('created_time', )
+    date_hierarchy='created_time'
+    list_filter=('created_time', )
+    search_fields=['start', 'end', 'created_time']
+    def save_model(self, request, obj, form, change):
+        if not obj.id:
+            obj.user=request.user
+        obj.save()
+
+class TestSessionAdmin(BaseAdmin):
+    list_display=('test_word', 'start', 'end', 'created_time')
+    readonly_fields=('user', 'created_time', )
+    date_hierarchy='created_time'
+    list_filter=('created_time', )
+    search_fields=['test_session', 'created_time']
+    def save_model(self, request, obj, form, change):
+        if not obj.id:
+            obj.current_word=obj.test_word.words.all()[0]
+            obj.user=request.user
+        obj.save()
+
 
 # Register your models here.
 admin.site.register(Tag, TagAdmin)
 admin.site.register(JapaneseWord, JapaneseWordAdmin)
 admin.site.register(TestWord, TestWordAdmin)
-admin.site.register(TestResult)
-admin.site.register(TestSession)
-admin.site.register(WordTesting)
+admin.site.register(TestResult, TestResultAdmin)
+admin.site.register(TestSession, TestSessionAdmin)
+# admin.site.register(WordTesting)

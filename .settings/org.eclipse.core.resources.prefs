@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//japanstudy/admin.py=utf-8
+encoding//japanstudy/forms.py=utf-8
 encoding//japanstudy/models.py=utf-8
+encoding/utils.py=utf-8
