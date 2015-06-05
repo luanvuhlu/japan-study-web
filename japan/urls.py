@@ -13,9 +13,23 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
 from django.contrib import admin
-
+from django.conf.urls import patterns, include, url
+import settings
+admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'japanstudy.views.add_japan_word', name='add_japan_word'),
 ]
+# STATIC
+urlpatterns += patterns('', (
+    r'^static/(?P<path>.*)$',
+    'django.views.static.serve',
+    {'document_root': settings.STATIC_ROOT}
+))
+# MEDIA
+urlpatterns += patterns('', (
+    r'^media/(?P<path>.*)$',
+    'django.views.static.serve',
+    {'document_root': settings.MEDIA_ROOT}
+))

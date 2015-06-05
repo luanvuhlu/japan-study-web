@@ -26,17 +26,19 @@ SECRET_KEY = 'np8*+2--72+ki^jx(ez&o09(h*ep!$96u3ealtldhp34#lbi2q'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+PROJECT_DIR=os.path.dirname(__file__)
 
 # Application definition
 
 INSTALLED_APPS = (
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'japanstudy',
 )
 
@@ -101,7 +103,59 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT= os.path.join(PROJECT_DIR,'static_media/')
+STATICFILES_DIRS = ( os.path.join(PROJECT_DIR,'static/'),)
+MEDIA_ROOT= os.path.join(PROJECT_DIR,'media/')
+MEDIA_URL='/media/'
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
+CRISPY_TEMPLATE_PACK= 'bootstrap3'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'hlu.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'account': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+        'group': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+        'news': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+        'student': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+        'topic': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
