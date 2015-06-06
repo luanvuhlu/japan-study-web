@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Japan Study{% endblock %}
 {% block content %}
-{% load crispy_forms_tags %}
-{% crispy form %}
+    <form class="form-inline" method="post">{% csrf_token %}
+{#    <input type="hidden" name="rownum" value="{{ rownum|length }}" />#}
+    {% include 'japanstudy/add-word-line-header.html' %}
+        {% for r in rownum %}
+            {% include 'japanstudy/add-word-line.html' %}
+        {% endfor %}
+    <input type="submit" />
+    </form>
 {% endblock %}
