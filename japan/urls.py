@@ -17,7 +17,11 @@ from django.contrib import admin
 from django.conf.urls import patterns, include, url
 import settings
 admin.autodiscover()
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+dajaxice_autodiscover()
+
 urlpatterns = [
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'japanstudy.views.add_japan_word', name='add_japan_word'),
 ]

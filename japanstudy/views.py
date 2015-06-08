@@ -35,16 +35,23 @@ def add_japan_word_advance(request):
     })
 def add_japan_word(request):
     user=get_user(request)
-    rows=10
     if request.method=='POST':
-        # rows=int(str(request.POST['rownum']))+1
-        pass
+        form=JapaneseWordForm(request.POST)
+        if form.is_valid():
+            word=form.save(commit=False)
+            word.user=user
+            word.save()
+            # form=JapaneseWordAdvanceForm(instance=word)
+            form=JapaneseWordForm()
+        else:
+            # TODO
+            log.error(form.errors)
+            # form=JapaneseWordAdvanceForm()
     else:
-        # rows=1
-        pass
+        form=JapaneseWordForm()
     return render(request, 'japanstudy/add-jp-word.html', {
         'username':user.username,
-        'rownum':range(0, rows)
+        'form':form
     })
 
 

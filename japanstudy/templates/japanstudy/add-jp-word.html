@@ -1,12 +1,37 @@
 {% extends 'base.html' %}
 {% block title %}Japan Study{% endblock %}
+{% block static %}
+    {% load dajaxice_templatetags %}
+     {% dajaxice_js_import %}
+    <script>
+        function test(){
+            $form=$('#addJPWords')
+            console.log($form.serialize())
+        }
+    $(document).ready(function(){
+        $('#submit-id-save_changes').click(function(){
+            Dajaxice.japanstudy.add_new_words(Dajax.process,{'form':$('#addJPWords').serialize(true)})
+        })
+    })
+    </script>
+{% endblock %}
 {% block content %}
-    <form class="form-inline" method="post">{% csrf_token %}
-{#    <input type="hidden" name="rownum" value="{{ rownum|length }}" />#}
-    {% include 'japanstudy/add-word-line-header.html' %}
-        {% for r in rownum %}
-            {% include 'japanstudy/add-word-line.html' %}
-        {% endfor %}
-    <input type="submit" />
-    </form>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="form-title text-center" style="padding: 20px;">Add New Words</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 text-center">
+            {% load crispy_forms_tags %}
+            {% crispy form %}
+            <div class="form-group">
+                <input type="button" name="save_changes" value=" Add" class="btn btn-primary" id="submit-id-save_changes">
+                <input type="submit" name="cancel" value="Cancel" class="btn btn-primary" id="submit-id-cancel">
+            </div>
+        </div>
+        <div class="col-lg-6 text-center">
+            123
+        </div>
+    </div>
 {% endblock %}

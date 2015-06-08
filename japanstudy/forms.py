@@ -41,13 +41,21 @@ class JapaneseWordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JapaneseWordForm, self).__init__(*args, **kwargs)
         self.helper=FormHelper(self)
-        self.helper.form_class = 'form-inline'
+        self.helper.form_id='addJPWords'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
         self.helper.layout = Layout(
             Field('source'),
             Field('mean'),
             Field('kanji'),
             Field('romaji'),
             Field('type'),
+        #     FormActions(
+        #     Submit('save_changes', ' Add'),
+        #     Submit('cancel', 'Cancel'),
+        #     css_class='form-group',
+        # )
     )
     class Meta:
         model=JapaneseWord
