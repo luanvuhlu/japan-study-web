@@ -30,6 +30,9 @@ class JapaneseWord(Word):
     kanji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Từ Kanji")
     romaji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Phiên âm Latinh")
     type=models.BooleanField(default=True, choices=JAPANESE_WORD_TYPE, verbose_name="Loại từ", blank=False)
+class TempJapaneseWord(JapaneseWord):
+
+    pass
 class TestWord(models.Model):
     title=models.CharField(max_length=200, blank=False, verbose_name="Tiêu đề best")
     words=models.ManyToManyField(Word, blank=False, verbose_name="Gồm các từ")

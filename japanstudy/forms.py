@@ -7,7 +7,7 @@ from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, ButtonHolder, HTML
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions, UneditableField, StrictButton
-from japanstudy.models import JapaneseWord
+from japanstudy.models import JapaneseWord, TempJapaneseWord
 class JapaneseWordAdvanceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JapaneseWordAdvanceForm, self).__init__(*args, **kwargs)
@@ -59,4 +59,8 @@ class JapaneseWordForm(forms.ModelForm):
     )
     class Meta:
         model=JapaneseWord
+        fields=['source', 'mean', 'kanji', 'romaji', 'type']
+class TempJapaneseWordForm(JapaneseWordForm):
+    class Meta:
+        model=TempJapaneseWord
         fields=['source', 'mean', 'kanji', 'romaji', 'type']

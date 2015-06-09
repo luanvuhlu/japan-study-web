@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http.response import HttpResponse
 from django.shortcuts import render
-from japanstudy.forms import JapaneseWordAdvanceForm, JapaneseWordForm
+from japanstudy.forms import JapaneseWordAdvanceForm, JapaneseWordForm, TempJapaneseWordForm
 from japan.utils import get_user
 import logging
 log=logging.getLogger(__name__)
@@ -36,19 +36,19 @@ def add_japan_word_advance(request):
 def add_japan_word(request):
     user=get_user(request)
     if request.method=='POST':
-        form=JapaneseWordForm(request.POST)
+        form=TempJapaneseWordForm(request.POST)
         if form.is_valid():
             word=form.save(commit=False)
             word.user=user
             word.save()
             # form=JapaneseWordAdvanceForm(instance=word)
-            form=JapaneseWordForm()
+            form=TempJapaneseWordForm()
         else:
             # TODO
             log.error(form.errors)
             # form=JapaneseWordAdvanceForm()
     else:
-        form=JapaneseWordForm()
+        form=TempJapaneseWordForm()
     return render(request, 'japanstudy/add-jp-word.html', {
         'username':user.username,
         'form':form
