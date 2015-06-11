@@ -6,13 +6,12 @@
     {% load dajaxice_templatetags %}
     {% dajaxice_js_import %}
     <script>
-        function test(data) {
-            console.log(data)
+        function handleForm(data) {
             Dajax.process(data)
         }
         $(document).ready(function () {
             $('#submit-id-save_changes').click(function () {
-                Dajaxice.japanstudy.add_new_words(test, {'form': $('#addJPWords').serialize(true)})
+                Dajaxice.japanstudy.add_new_words(handleForm, {'form': $('#addJPWords').serialize(true)})
             })
         })
     </script>

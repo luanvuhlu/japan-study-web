@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 from django.contrib import admin
-from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, WordTesting
+from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, WordTesting, AddWordSession
 
 class BaseAdmin(admin.ModelAdmin):
     def delete_model(self, request, obj):
@@ -8,7 +8,7 @@ class BaseAdmin(admin.ModelAdmin):
         obj.save()
 class JapaneseWordAdmin(BaseAdmin):
     list_display=('source', 'kanji','mean', 'other_mean', 'level', 'created_time', 'active')
-    readonly_fields=('user', 'created_time')
+    readonly_fields=('user', 'created_time', 'temp')
     date_hierarchy='created_time'
     list_filter=('created_time', )
     search_fields=['source', 'mean', 'kanji', 'other_mean', 'created_time']
@@ -69,4 +69,4 @@ admin.site.register(JapaneseWord, JapaneseWordAdmin)
 admin.site.register(TestWord, TestWordAdmin)
 admin.site.register(TestResult, TestResultAdmin)
 admin.site.register(TestSession, TestSessionAdmin)
-# admin.site.register(WordTesting)
+admin.site.register(AddWordSession)

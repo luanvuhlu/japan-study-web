@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User 
 from django.core.validators import MinValueValidator
+from django.template.defaultfilters import default
 STATUS=(('Y', 'Y'), ('N', 'N'))
 JAPANESE_WORD_TYPE=((True, 'Hiragana'), (False, 'Katakana'))
 class Tag(models.Model):
@@ -24,15 +25,23 @@ class Word(models.Model):
     sames=models.ManyToManyField('self', blank=True, verbose_name="Từ cùng nghĩa")
     created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
     active=models.CharField(max_length=2, choices=STATUS, default='Y', verbose_name="Trạng thái")
+    temp=models.BooleanField(default=False, blank=False, verbose_name="Dữ liệu tạm")
     def __unicode__(self):
         return self.source
 class JapaneseWord(Word):
     kanji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Từ Kanji")
     romaji=models.CharField(max_length=200, blank=True, null=True, verbose_name="Phiên âm Latinh")
     type=models.BooleanField(default=True, choices=JAPANESE_WORD_TYPE, verbose_name="Loại từ", blank=False)
-class TempJapaneseWord(JapaneseWord):
-
-    pass
+    def __unicode__(self):
+        return Word.__unicode__(self)
+class AddWordSession(models.Model):
+    japanese_words=models.ManyToManyField(JapaneseWord, blank=True, verbose_name="Từ được thêm")
+    user=models.ForeignKey(User, verbose_name="Người tạo")
+    current=models.BooleanField(default=True, blank=True, verbose_name="Đang sử dụng")
+    created_time=models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
+    active=models.CharField(max_length=2, choices=STATUS, default='Y', verbose_name="Trạng thái")
+    def __unicode__(self):
+        return self.user.__str__()
 class TestWord(models.Model):
     title=models.CharField(max_length=200, blank=False, verbose_name="Tiêu đề best")
     words=models.ManyToManyField(Word, blank=False, verbose_name="Gồm các từ")
