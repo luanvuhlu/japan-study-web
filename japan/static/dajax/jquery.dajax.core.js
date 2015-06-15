@@ -2,6 +2,7 @@ var Dajax = {
     process: function(data)
     {
         $.each(data, function(i,elem){
+            console.log(elem.cmd)
         switch(elem.cmd)
         {
             case 'alert':

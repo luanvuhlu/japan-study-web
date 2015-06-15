@@ -1,0 +1,13 @@
+{% if word %}
+<input type="hidden" name="wordId" value="{{word.id}}" />
+<div class="row">
+	<div class="col-lg-1">
+		<button class="btn btn-sm btn-primary delete">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+	</div>
+	<div class="col-lg-3 source">{{word.source}}</div>
+	<div class="col-lg-2 kanji">{{word.kanji}}</div>
+	<div class="col-lg-4 mean">{{word.mean}}</div>
+</div>
+{% endif %}

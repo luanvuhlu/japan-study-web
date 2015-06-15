@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from japanstudy.forms import JapaneseWordAdvanceForm, JapaneseWordForm
+from japanstudy.forms import JapaneseWordAdvanceForm, JapaneseWordForm, TestWordForm
 from japan.utils import get_user
 from models import AddWordSession
 import logging
@@ -58,5 +58,25 @@ def add_japan_word(request):
         'username':user.username,
         'form':form
     })
-
+def add_word_success(request):
+    return HttpResponse('success')
+def add_test_case(request):
+    user = get_user(request)
+    if request.method == 'POST':
+        form = TestWordForm(request.POST)
+        if form.is_valid():
+            test_word = form.save(commit=False)
+            test_word.user = user
+            test_word.save()
+            form.save_m2m()
+            form = TestWordForm()
+        else:
+            # TODO
+            log.error(form.errors)
+    else:
+        form=TestWordForm()
+    return render(request, 'japanstudy/add-test-case-word.html', {
+        'username':user.username,
+        'form':form
+    })
 

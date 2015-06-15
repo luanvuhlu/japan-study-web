@@ -1,82 +1,75 @@
-{% extends 'base.html' %}
-{% block title %}Japan Study{% endblock %}
-{% block static %}
-    {% load static %}
-    <script src="{% static "dajax/jquery.dajax.core.js" %}"></script>
-    {% load dajaxice_templatetags %}
-    {% dajaxice_js_import %}
-    <script>
-        function handleForm(data) {
-            Dajax.process(data)
-        }
-        $(document).ready(function () {
-            $('#submit-id-save_changes').click(function () {
-                Dajaxice.japanstudy.add_new_words(handleForm, {'form': $('#addJPWords').serialize(true)})
-            })
-        })
-    </script>
-{% endblock %}
-{% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="form-title text-center" style="padding: 20px;">Add New Words</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 text-center">
-            {% load crispy_forms_tags %}
-            {% crispy form %}
-            <div class="form-group">
-                <input type="button" name="save_changes" value=" Add" class="btn btn-primary"
-                       id="submit-id-save_changes">
-                <input type="submit" name="cancel" value="Cancel" class="btn btn-primary" id="submit-id-cancel">
-            </div>
-        </div>
-        <div class="col-lg-6 text-left word-detail">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-1">
-                            <button class="btn btn-sm btn-primary">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </div>
-                        <div class="col-lg-3">
-                            わたし
-                        </div>
-                        <div class="col-lg-2">
-                            私
-                        </div>
-                        <div class="col-lg-4">
-                            Tôi
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-1">
-                            <button class="btn btn-sm btn-primary">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </div>
-                        <div class="col-lg-3">
-                            わたし
-                        </div>
-                        <div class="col-lg-2">
-                            私
-                        </div>
-                        <div class="col-lg-4">
-                            Tôi
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-10 text-center">
-                    <button class="btn btn-primary">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </div>
-            </div>
+{% extends 'base.html' %} {% block title %}Japan Study{% endblock %} 
+{% block static %} {% load static %}
+<script src="{% static "dajax/jquery.dajax.core.js" %}"></script>
+{% load dajaxice_templatetags %} {% dajaxice_js_import %}
+<script>
+	function handleForm(data) {
+		if (data == 'None') {
+			return;
+		}
+		$('#newWords').append(data);
+	}
 
-        </div>
-    </div>
+	$(document).ready(function() {
+		$('#submit-id-save_changes').click(function() {
+			Dajaxice.japanstudy.add_new_words(handleForm, {
+				'form' : $('#addJPWords').serialize(true)
+			});
+		});
+		$('#save').click(function() {
+			Dajaxice.japanstudy.save_session(function(data) {
+				if (data == 'True') {
+					window.location.replace("/add-word-success");
+				}
+			});
+		});
+	})
+</script>
+{% endblock %} {% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="form-title text-center" style="padding: 20px;">Add New
+			Words</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-6 text-center">
+		{% load crispy_forms_tags %} {% crispy form %}
+		<div class="form-group">
+			<input type="button" name="save_changes" value=" Add"
+				class="btn btn-primary" id="submit-id-save_changes"> <input
+				type="submit" name="cancel" value="Cancel" class="btn btn-primary"
+				id="submit-id-cancel">
+		</div>
+	</div>
+	<div class="col-lg-6 text-left word-detail">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="" id="newWords">
+					{% if words %} {% for word in words %} <input type="hidden"
+						name="wordId" value="{{word.id}}" />
+					<div class="row">
+						<div class="col-lg-1">
+							<button class="btn btn-sm btn-primary delete">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</div>
+						<div class="col-lg-3 source">わたし</div>
+						<div class="col-lg-2 kanji">私</div>
+						<div class="col-lg-4 mean">Tôi</div>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+				<div class="row">
+					<div class="col-lg-10 text-center">
+						<button class="btn btn-primary" id="save">
+							<span class="glyphicon glyphicon-plus"> Save</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}

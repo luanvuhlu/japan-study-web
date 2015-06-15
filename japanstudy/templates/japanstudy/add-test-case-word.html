@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}Japan Study{% endblock %} {%
+block static %} {% load static %}
+<link rel="stylesheet"
+	href="{% static 'datetimepicker/jquery.datetimepicker.css' %}"
+	type="text/css" media="screen" />
+<link rel="stylesheet"
+	href="{% static 'jquery-picklist/jquery-picklist.css' %}"
+	type="text/css" media="screen" />
+<script src="{% static "dajax/jquery.dajax.core.js" %}"></script>
+<script src="{% static "datetimepicker/jquery.datetimepicker.js" %}"></script>
+<script src="{% static "jquery-picklist/jquery.ui.widget.js" %}"></script>
+<script src="{% static "jquery-picklist/jquery-picklist.js" %}"></script>
+{% load dajaxice_templatetags %} {% dajaxice_js_import %}
+<script>
+	$(document).ready(function() {
+		$('.datetimepicker').datetimepicker();
+		$(".picklist").pickList();
+	});
+</script>
+{% endblock %} {% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="form-title text-center" style="padding: 20px;">Add New
+			Test Case</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-offset-1 col-lg-8 text-center">{% load
+		crispy_forms_tags %} {% crispy form %}</div>
+</div>
+
+{% endblock %}

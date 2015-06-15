@@ -23,7 +23,10 @@ dajaxice_autodiscover()
 urlpatterns = [
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^$', 'japanstudy.views.add_japan_word', name='add_japan_word'),
+    url(r'^add-word-success', 'japanstudy.views.add_word_success', name='add_word_success'),
+    url(r'^add-test-case', 'japanstudy.views.add_test_case', name='add_test_case'),
 ]
 # STATIC
 urlpatterns += patterns('', (

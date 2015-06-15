@@ -7,11 +7,11 @@ from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, ButtonHolder, HTML
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions, UneditableField, StrictButton
-from japanstudy.models import JapaneseWord
+from japanstudy.models import JapaneseWord, TestWord
 class JapaneseWordAdvanceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JapaneseWordAdvanceForm, self).__init__(*args, **kwargs)
-        self.helper=FormHelper(self)
+        self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
@@ -35,13 +35,13 @@ class JapaneseWordAdvanceForm(forms.ModelForm):
         )
     )
     class Meta:
-        model=JapaneseWord
-        exclude=['user', 'active', 'created_time', 'temp']
+        model = JapaneseWord
+        exclude = ['user', 'active', 'created_time', 'temp']
 class JapaneseWordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JapaneseWordForm, self).__init__(*args, **kwargs)
-        self.helper=FormHelper(self)
-        self.helper.form_id='addJPWords'
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'addJPWords'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
@@ -58,5 +58,29 @@ class JapaneseWordForm(forms.ModelForm):
         # )
     )
     class Meta:
-        model=JapaneseWord
-        fields=['source', 'mean', 'kanji', 'romaji', 'type']
+        model = JapaneseWord
+        fields = ['source', 'mean', 'kanji', 'romaji', 'type']
+class TestWordForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TestWordForm, self).__init__(*args, **kwargs)
+        self.fields['start_date'].input_formats = ['%Y/%m/%d %H:%M']
+        self.fields['completed_time'].input_formats = ['%Y/%m/%d %H:%M']
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'testWordForm'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-4'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'POST'
+        self.helper.layout = Layout(
+            Field('title'),
+            Field('words', css_class='picklist'),
+            Field('start_date', css_class='datetimepicker' ),
+            Field('completed_time' , css_class='datetimepicker' ),
+            FormActions(
+            Submit('save_changes', ' Add'),
+            Submit('cancel', 'Cancel'),
+            css_class='form-group',)
+        )
+    class Meta:
+        model = TestWord
+        fields = ['title', 'words', 'start_date', 'completed_time']

@@ -31,6 +31,10 @@ PROJECT_DIR=os.path.dirname(__file__)
 # Application definition
 
 INSTALLED_APPS = (
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
     'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
