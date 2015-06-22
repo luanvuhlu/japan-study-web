@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic.list import ListView
+from django.utils import timezone
 from japanstudy.forms import JapaneseWordAdvanceForm, JapaneseWordForm, TestWordForm
 from japan.utils import get_user
 from models import AddWordSession
+
 import logging
+from japanstudy.models import TestWord, TestSession, TestSessionWordOrder
 log = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
@@ -79,4 +83,28 @@ def add_test_case(request):
         'username':user.username,
         'form':form
     })
-
+class TestWordListView(ListView):
+    model=TestWord
+    def get_context_data(self, **kwargs):
+        context=super(TestWordListView, self).get_context_data(**kwargs)
+        return context
+def start_test_word(request, pk):
+    test_word=get_object_or_404(TestWord, pk=pk)
+    words=test_word.get_shuffle_words()
+    test_session=TestSession.objects.create(test_word=test_word, user=get_user(request))
+    test_session.save()
+    for i in range(1, len(words)):
+        test_session_word_order=TestSessionWordOrder.objects.create(order=i, word=words[i])
+        test_session_word_order.save()
+        test_session.test_session_word_orders.add(test_session_word_order)
+    return redirect('test-word-session', test_session=test_session.id, word=1)
+def test_word_session(request, test_session, word):
+    test_session=get_object_or_404(TestSession, pk=test_session)
+    for w in test_session.test_session_word_orders.all():
+        w.current=False
+        if w.order==word:
+            w.current=True
+        if not w.completed:
+            w.start=timezone.now()
+        w.save()
+    return HttpResponse('start')

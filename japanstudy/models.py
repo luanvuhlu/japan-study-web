@@ -59,24 +59,27 @@ class TestWord(models.Model):
     active = models.CharField(max_length=2, choices=STATUS, default='Y', verbose_name="Trạng thái")
     def __unicode__(self):
         return self.title
-class TestSession(models.Model):
-    test_word = models.ForeignKey(TestWord, verbose_name="Bài test")
-    current_word = models.ForeignKey(Word, null=True, blank=True, verbose_name="Từ đang test")
-    start = models.DateTimeField(null=True, blank=True, verbose_name="Bắt ")
+    def get_shuffle_words(self):
+        return self.words.order_by('?')
+class TestSessionWordOrder(models.Model):
+    order=models.PositiveSmallIntegerField(verbose_name="Thứ tự")
+    word=models.ForeignKey(Word, verbose_name="Từ")
+    current=models.BooleanField(default=False, verbose_name="Từ hiện tại")
+    correct = models.BooleanField(default=False, blank=True, verbose_name="Chính xác")
+    completed = models.BooleanField(default=False, verbose_name="Hoàn thành")
+    start = models.DateTimeField(null=True, blank=True, verbose_name="Bắt đầu")
     end = models.DateTimeField(null=True, blank=True, verbose_name="Kết thúc")
-    created_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
-    user = models.ForeignKey(User, verbose_name="Người tạo")
-    def __unicode__(self):
-        return self.test_word.__str__() or u''
-class WordTesting(models.Model):
-    test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
-    word = models.ForeignKey(Word, verbose_name="Từ")
-    start = models.DateTimeField(null=True, blank=True, verbose_name="Bắt ")
-    end = models.DateTimeField(null=True, blank=True, verbose_name="Kết thúc")
-    correct = models.BooleanField(blank=True, verbose_name="Chính xác")
-    complete = models.BooleanField(default=False, verbose_name="Hoàn thành")
     def __unicode__(self):
         return unicode(self.word) or u''
+class TestSession(models.Model):
+    test_word = models.ForeignKey(TestWord, verbose_name="Bài test")
+    test_session_word_orders = models.ManyToManyField(TestSessionWordOrder, blank=True, verbose_name="Thứ tự")
+    created_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
+    user = models.ForeignKey(User, verbose_name="Người tạo")
+    completed=models.BooleanField(default=False, verbose_name="Đã Hoàn thành")
+    def __unicode__(self):
+        return self.test_word.__str__() or u''
+
 class TestResult(models.Model):
     test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
     correct = models.PositiveSmallIntegerField(validators=[MinValueValidator(0)], verbose_name="Số câu đúng")

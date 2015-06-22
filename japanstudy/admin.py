@@ -51,7 +51,7 @@ class TestResultAdmin(BaseAdmin):
         obj.save()
 
 class TestSessionAdmin(BaseAdmin):
-    list_display=('test_word', 'start', 'end', 'created_time')
+    list_display=('test_word', 'created_time')
     readonly_fields=('user', 'created_time', )
     date_hierarchy='created_time'
     list_filter=('created_time', )
@@ -69,4 +69,3 @@ admin.site.register(JapaneseWord, JapaneseWordAdmin)
 admin.site.register(TestWord, TestWordAdmin)
 admin.site.register(TestResult, TestResultAdmin)
 admin.site.register(TestSession, TestSessionAdmin)
-admin.site.register(AddWordSession)

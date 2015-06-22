@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block title %}Test cases list{% endblock %}
+{% block static %}
+<style>
+.test-word-rows{
+font-size: 25px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="form-title text-center" style="padding: 20px;">Test
+			cases list</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-offset-2 col-lg-8">
+	{% for tw in object_list %}
+		<div class="row test-word-rows">
+			<div class="col-lg-5">
+				<a href="#"><strong>{{tw.title}}</strong></a>
+			</div>
+			<div class="col-lg-6">
+				{% if tw.start_date %}{{tw.start_date}}{% endif %}
+			</div>
+			<div class="col-lg-1">
+				<a href="start-test-word/{{tw.id}}" class="btn btn-primary">
+					<span> Start</span>
+				</a>
+			</div>
+		</div>
+	{%	empty %}
+		No Test Word yet.</li>
+	{% endfor %}
+	</div>
+</div>
+{% endblock %}

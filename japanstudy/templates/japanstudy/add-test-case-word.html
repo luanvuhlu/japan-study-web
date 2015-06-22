@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %}Japan Study{% endblock %} {%
-block static %} {% load static %}
+{% extends 'base.html' %} {% block title %}Japan Study{% endblock %} {% block static %} {% load static %}
 <link rel="stylesheet"
 	href="{% static 'datetimepicker/jquery.datetimepicker.css' %}"
 	type="text/css" media="screen" />
@@ -25,8 +24,8 @@ block static %} {% load static %}
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-offset-1 col-lg-8 text-center">{% load
-		crispy_forms_tags %} {% crispy form %}</div>
+	<div class="col-lg-offset-1 col-lg-8 text-center">
+	{% load crispy_forms_tags %} {% crispy form %}</div>
 </div>
 
 {% endblock %}
