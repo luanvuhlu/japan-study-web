@@ -30,7 +30,8 @@ urlpatterns = [
     url(r'^add-test-case', 'japanstudy.views.add_test_case', name='add_test_case'),
     url(r'^test-cases', TestWordListView.as_view(), name='test-cases'),
     url(r'^start-test-word/(?P<pk>\d+)', 'japanstudy.views.start_test_word', name='start-test-word'),
-    url(r'^test-word/(?P<test_session>\d+)/(?P<word>\d+)', 'japanstudy.views.test_word_session', name='test-word-session'),
+    url(r'^test-word/(?P<test_session_pk>\d+)/(?P<order>\d+)', 'japanstudy.views.test_word_session', name='test-word-session'),
+    url(r'^test-word-result/(?P<test_session_pk>\d+)', 'japanstudy.views.test_word_session_result', name='test-word-session-result'),
 ]
 # STATIC
 urlpatterns += patterns('', (

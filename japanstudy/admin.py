@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 from django.contrib import admin
-from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, WordTesting, AddWordSession
+from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, AddWordSession
 
 class BaseAdmin(admin.ModelAdmin):
     def delete_model(self, request, obj):

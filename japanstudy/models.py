@@ -79,7 +79,14 @@ class TestSession(models.Model):
     completed=models.BooleanField(default=False, verbose_name="Đã Hoàn thành")
     def __unicode__(self):
         return self.test_word.__str__() or u''
-
+class TestingWord(models.Model):
+    word=models.ForeignKey(Word, verbose_name="Từ gốc")
+    source = models.CharField(max_length=200,null=True, blank=True, verbose_name="Từ")
+    mean = models.CharField(max_length=200, null=True,blank=True, verbose_name="Nghĩa")
+    kanji = models.CharField(max_length=200, null=True,blank=True, verbose_name="Từ Kanji")
+    added_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày thêm")
+    test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
+    order=models.PositiveSmallIntegerField(verbose_name="Thứ tự")
 class TestResult(models.Model):
     test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
     correct = models.PositiveSmallIntegerField(validators=[MinValueValidator(0)], verbose_name="Số câu đúng")

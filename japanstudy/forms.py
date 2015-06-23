@@ -84,3 +84,38 @@ class TestWordForm(forms.ModelForm):
     class Meta:
         model = TestWord
         fields = ['title', 'words', 'start_date', 'completed_time']
+class TestingWordForm(forms.Form):
+    def __init__(self, current=1,  end=None, source_val=None, mean_val=None, kanji_val=None, *args, **kwargs):
+        super(TestingWordForm, self).__init__(*args, **kwargs)
+        self.helper=FormHelper()
+        self.helper.form_class="form-horizontal"
+        self.helper.action="POST"
+        if current==1 and end:
+            form_submit_buttom= FormActions(
+                                Submit('finish', 'Finish', css_class="btn-primary"),
+                            )
+        elif current==1:
+            form_submit_buttom= FormActions(
+                                Submit('next', 'Next', css_class="btn-primary"),
+                            )
+        elif end:
+            form_submit_buttom= FormActions(
+                                    Submit('prev', 'Prev'),
+                                    Submit('finish', 'Finish', css_class="btn-primary"),
+                                )
+        else:
+            form_submit_buttom= FormActions(
+                                    Submit('prev', 'Prev'),
+                                    Submit('next', 'Next', css_class="btn-primary"),
+                                )
+        self.helper.layout=Layout(
+                             Field('source', value=source_val or '', disabled=True),
+                             Field('mean', value=mean_val or ''),
+                             Field('kanji', value=kanji_val or ''),
+                             form_submit_buttom
+                             )
+    source=forms.CharField(max_length=200, required=False)
+    mean=forms.CharField(max_length=200, required=False)
+    kanji=forms.CharField(max_length=200, required=False)
+    
+    
