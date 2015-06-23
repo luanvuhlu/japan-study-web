@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+ 
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="form-title text-center" style="padding: 20px;">Test
+			Result</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-offset-2 col-lg-8">
+	{% for tw in object_list %}
+        <div class="row test-word-result">
+            <div class="col-lg-4">
+                <strong>{{ tw.word.source }}</strong>
+            </div>
+			<div class="col-lg-4">
+				{% if tw.mean == tw.word.mean %}
+                    {{tw.mean}}
+                {% else %}
+                    <s>{{tw.mean}}</s>
+				{% endif %}
+			</div>
+			<div class="col-lg-4">
+                {% if tw.kanji == tw.word.kanji %}
+                    {{tw.kanji}}
+                {% else %}
+                    <s>{{tw.kanji}}</s>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row test-word-source">
+			<div class="col-lg-offset-4 col-lg-4">
+				{% if tw.mean != tw.word.mean %}
+                    {{tw.word.mean}}
+				{% endif %}
+			</div>
+			<div class="col-lg-4">
+                {% if tw.kanji != tw.word.kanji %}
+                    {{tw.word.kanji}}
+				{% endif %}
+			</div>
+
+		</div>
+
+        <hr />
+	{%	empty %}
+		No Word yet.</li>
+	{% endfor %}
+    {% if object_list %}
+        <div class="row">
+            <div class="col-lg-offset-4 col-lg-4">
+                <a href="{% url 'start-test-word' object_list.0.test_session.test_word.id %}" class="btn btn-success">
+                        <span> Try again !</span>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+	</div>
+</div>
+{% endblock %}

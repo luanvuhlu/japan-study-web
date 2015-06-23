@@ -24,7 +24,7 @@ font-size: 25px;
 				{% if tw.start_date %}{{tw.start_date}}{% endif %}
 			</div>
 			<div class="col-lg-1">
-				<a href="start-test-word/{{tw.id}}" class="btn btn-primary">
+				<a href="{% url 'start-test-word' tw.id %}" class="btn btn-primary">
 					<span> Start</span>
 				</a>
 			</div>

@@ -15,7 +15,10 @@ log = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
     form = JapaneseWordAdvanceForm()
-    return render(request, "japanstudy/index.html", {
+    return render(request, "japanstudy/index.html", {})
+def add_japan_word_advance2(request):
+    form = JapaneseWordAdvanceForm()
+    return render(request, "japanstudy/add-jp-word-advance.html", {
         'form':form,
     })
 def add_japan_word_advance(request):
@@ -95,8 +98,8 @@ def start_test_word(request, pk):
     words=test_word.get_shuffle_words()
     test_session=TestSession.objects.create(test_word=test_word, user=get_user(request))
     test_session.save()
-    for i in range(1, len(words)):
-        test_session_word_order=TestSessionWordOrder.objects.create(order=i, word=words[i])
+    for i in range(1, len(words)+1):
+        test_session_word_order=TestSessionWordOrder.objects.create(order=i, word=words[i-1])
         test_session_word_order.save()
         test_session.test_session_word_orders.add(test_session_word_order)
     return redirect('test-word-session', test_session_pk=test_session.id, order=1)
@@ -112,15 +115,22 @@ def test_word_session(request, test_session_pk, order):
     
     if request.method == 'POST':
         testing_word, testing_word_created=TestingWord.objects.get_or_create(test_session=test_session, order=order, word=word)
-        testing_word.source=request.POST.get('source')
-        testing_word.mean=request.POST.get('mean')
-        testing_word.kanji=request.POST.get('kanji')
+        source=request.POST.get('source')
+        mean=request.POST.get('mean')
+        kanji=request.POST.get('kanji')
+
+        testing_word.source=source.strip() if source else source
+        testing_word.mean=mean.strip() if mean else mean
+        testing_word.kanji=kanji.strip() if kanji else kanji
         testing_word.save()            
         if request.POST.get('next') and not end:
             new_order=order+1
         elif request.POST.get('prev') and order>1:
             new_order=order-1
         elif request.POST.get('finish'):
+            test_session.completed=True
+            test_session.completed_time=timezone.now()
+            test_session.save()
             return redirect('test-word-session-result', test_session_pk=test_session.id)
         else:
             raise Http404('Invalid post!')
@@ -135,8 +145,24 @@ def test_word_session(request, test_session_pk, order):
                                                       'username':user.username,
                                                       'form':form,
                                                     } )
-def test_word_session_result(request, test_session_pk):
-    
-    pass
-    
+
+class TestingWordResultView(ListView):
+    model=TestingWord
+    template_name = 'japanstudy/test-result.html'
+    def get_context_data(self, **kwargs):
+        context=super(TestingWordResultView, self).get_context_data(**kwargs)
+        return context
+    def get_queryset(self):
+        user=get_user(self.request)
+        qs = super(TestingWordResultView, self).get_queryset()
+        return qs.filter(test_session__pk=self.kwargs['test_session_pk'], test_session__user=user)
+class TestSessionListView(ListView):
+    model=TestSession
+    def get_context_data(self, **kwargs):
+        context=super(TestSessionListView, self).get_context_data(**kwargs)
+        return context
+    def get_queryset(self):
+        user=get_user(self.request)
+        qs = super(TestSessionListView, self).get_queryset()
+        return qs.filter(completed=True, user=user)
     

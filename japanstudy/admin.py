@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 from django.contrib import admin
-from models import Tag, JapaneseWord, TestWord, TestResult, TestSession, AddWordSession
+from models import Tag, JapaneseWord, TestWord, TestSession, AddWordSession, TestingWord
 
 class BaseAdmin(admin.ModelAdmin):
     def delete_model(self, request, obj):
@@ -39,16 +39,8 @@ class TestWordAdmin(BaseAdmin):
         if not obj.id:
             obj.user=request.user
         obj.save()
-class TestResultAdmin(BaseAdmin):
-    list_display=('test_session', 'correct', 'incorrect', 'break_words', 'created_time')
-    readonly_fields=('created_time', )
-    date_hierarchy='created_time'
-    list_filter=('created_time', )
-    search_fields=['start', 'end', 'created_time']
-    def save_model(self, request, obj, form, change):
-        if not obj.id:
-            obj.user=request.user
-        obj.save()
+class TestingWordAdmin(BaseAdmin):
+    pass
 
 class TestSessionAdmin(BaseAdmin):
     list_display=('test_word', 'created_time')
@@ -67,5 +59,5 @@ class TestSessionAdmin(BaseAdmin):
 admin.site.register(Tag, TagAdmin)
 admin.site.register(JapaneseWord, JapaneseWordAdmin)
 admin.site.register(TestWord, TestWordAdmin)
-admin.site.register(TestResult, TestResultAdmin)
+admin.site.register(TestingWord, TestingWordAdmin)
 admin.site.register(TestSession, TestSessionAdmin)

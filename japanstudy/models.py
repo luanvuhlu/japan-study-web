@@ -51,7 +51,7 @@ class AddWordSession(models.Model):
         return self.user.__str__()
 class TestWord(models.Model):
     title = models.CharField(max_length=200, blank=False, verbose_name="Tiêu đề")
-    words = models.ManyToManyField(Word, blank=False, verbose_name="Gồm các từ")
+    words = models.ManyToManyField(JapaneseWord, blank=False, verbose_name="Gồm các từ")
     start_date = models.DateTimeField(null=True, blank=True, verbose_name="Ngày bắt đầu")
     completed_time = models.DateTimeField(null=True, blank=True, verbose_name="Ngày hoàn thành")
     created_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
@@ -63,7 +63,7 @@ class TestWord(models.Model):
         return self.words.order_by('?')
 class TestSessionWordOrder(models.Model):
     order=models.PositiveSmallIntegerField(verbose_name="Thứ tự")
-    word=models.ForeignKey(Word, verbose_name="Từ")
+    word=models.ForeignKey(JapaneseWord, verbose_name="Từ")
     current=models.BooleanField(default=False, verbose_name="Từ hiện tại")
     correct = models.BooleanField(default=False, blank=True, verbose_name="Chính xác")
     completed = models.BooleanField(default=False, verbose_name="Hoàn thành")
@@ -77,21 +77,16 @@ class TestSession(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
     user = models.ForeignKey(User, verbose_name="Người tạo")
     completed=models.BooleanField(default=False, verbose_name="Đã Hoàn thành")
+    completed_time=models.DateTimeField(blank=True, null=True, verbose_name="Thời gian hoàn thành")
     def __unicode__(self):
         return self.test_word.__str__() or u''
 class TestingWord(models.Model):
-    word=models.ForeignKey(Word, verbose_name="Từ gốc")
+    word=models.ForeignKey(JapaneseWord, verbose_name="Từ gốc")
     source = models.CharField(max_length=200,null=True, blank=True, verbose_name="Từ")
     mean = models.CharField(max_length=200, null=True,blank=True, verbose_name="Nghĩa")
     kanji = models.CharField(max_length=200, null=True,blank=True, verbose_name="Từ Kanji")
     added_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày thêm")
     test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
     order=models.PositiveSmallIntegerField(verbose_name="Thứ tự")
-class TestResult(models.Model):
-    test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
-    correct = models.PositiveSmallIntegerField(validators=[MinValueValidator(0)], verbose_name="Số câu đúng")
-    incorrect = models.PositiveSmallIntegerField(validators=[MinValueValidator(0)], verbose_name="Số câu sai")
-    break_words = models.PositiveSmallIntegerField(validators=[MinValueValidator(0)], verbose_name="Số bỏ qua")
-    created_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày tạo")
     def __unicode__(self):
-        return self.test_session.__str__() or u''
+        return unicode(self.word) or u''
