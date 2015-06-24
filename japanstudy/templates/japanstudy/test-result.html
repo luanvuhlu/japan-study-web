@@ -16,30 +16,30 @@
                 <strong>{{ tw.word.source }}</strong>
             </div>
 			<div class="col-lg-4">
-				{% if tw.mean == tw.word.mean %}
-                    {{tw.mean}}
+				{% ifequal tw.mean|lower tw.word.mean|lower %}
+                    {{tw.word.mean}}
                 {% else %}
                     <s>{{tw.mean}}</s>
-				{% endif %}
+				{% endifequal %}
 			</div>
 			<div class="col-lg-4">
-                {% if tw.kanji == tw.word.kanji %}
-                    {{tw.kanji}}
+                {% ifequal tw.kanji|lower tw.word.kanji|lower %}
+                    {{tw.word.kanji}}
                 {% else %}
                     <s>{{tw.kanji}}</s>
-				{% endif %}
+				{% endifequal %}
 			</div>
 		</div>
 		<div class="row test-word-source">
 			<div class="col-lg-offset-4 col-lg-4">
-				{% if tw.mean != tw.word.mean %}
+				{% ifnotequal tw.mean|lower tw.word.mean|lower %}
                     {{tw.word.mean}}
-				{% endif %}
+				{% endifnotequal %}
 			</div>
 			<div class="col-lg-4">
-                {% if tw.kanji != tw.word.kanji %}
+                {% ifnotequal tw.kanji|lower tw.word.kanji|lower %}
                     {{tw.word.kanji}}
-				{% endif %}
+				{% endifnotequal %}
 			</div>
 
 		</div>

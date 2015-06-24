@@ -11,6 +11,7 @@ from japanstudy.models import JapaneseWord, TestWord
 class JapaneseWordAdvanceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JapaneseWordAdvanceForm, self).__init__(*args, **kwargs)
+        self.fields['source'].widget.attrs.update({'autofocus': 'autofocus'})
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
@@ -40,10 +41,11 @@ class JapaneseWordAdvanceForm(forms.ModelForm):
 class JapaneseWordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JapaneseWordForm, self).__init__(*args, **kwargs)
+        self.fields['source'].widget.attrs.update({'autofocus': 'autofocus'})
         self.helper = FormHelper(self)
         self.helper.form_id = 'addJPWords'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
+        self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-8'
         self.helper.layout = Layout(
             Field('source'),
@@ -51,6 +53,7 @@ class JapaneseWordForm(forms.ModelForm):
             Field('kanji'),
             Field('romaji'),
             Field('type'),
+            Field('description', rows="3"),
         #     FormActions(
         #     Submit('save_changes', ' Add'),
         #     Submit('cancel', 'Cancel'),
@@ -59,10 +62,11 @@ class JapaneseWordForm(forms.ModelForm):
     )
     class Meta:
         model = JapaneseWord
-        fields = ['source', 'mean', 'kanji', 'romaji', 'type']
+        fields = ['source', 'mean', 'kanji', 'romaji', 'type', 'description']
 class TestWordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TestWordForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'autofocus': 'autofocus'})
         self.fields['start_date'].input_formats = ['%Y/%m/%d %H:%M']
         self.fields['completed_time'].input_formats = ['%Y/%m/%d %H:%M']
         self.helper = FormHelper(self)
@@ -87,6 +91,7 @@ class TestWordForm(forms.ModelForm):
 class TestingWordForm(forms.Form):
     def __init__(self, current=1,  end=None, source_val=None, mean_val=None, kanji_val=None, *args, **kwargs):
         super(TestingWordForm, self).__init__(*args, **kwargs)
+        self.fields['mean'].widget.attrs.update({'autofocus': 'autofocus'})
         self.helper=FormHelper()
         self.helper.form_class="form-horizontal"
         self.helper.action="POST"

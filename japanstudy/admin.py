@@ -8,7 +8,7 @@ class BaseAdmin(admin.ModelAdmin):
         obj.save()
 class JapaneseWordAdmin(BaseAdmin):
     list_display=('source', 'kanji','mean', 'other_mean', 'level', 'created_time', 'active')
-    readonly_fields=('user', 'created_time', 'temp')
+    readonly_fields=('user', 'created_time')
     date_hierarchy='created_time'
     list_filter=('created_time', )
     search_fields=['source', 'mean', 'kanji', 'other_mean', 'created_time']
