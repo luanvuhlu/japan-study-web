@@ -4,6 +4,7 @@ from crispy_forms.templatetags.crispy_forms_field import css_class
 __author__ = 'vuvanluan'
 from django import forms
 from django_select2.widgets import Select2MultipleWidget
+import random
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, ButtonHolder, HTML
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions, UneditableField, StrictButton
@@ -19,8 +20,8 @@ class JapaneseWordAdvanceForm(forms.ModelForm):
         self.error_text_inline = True
         self.helper.layout = Layout(
             Field('source'),
-            Field('mean'),
             Field('kanji'),
+            Field('mean'),
             Field('romaji'),
             Field('type'),
             Field('other_mean'),
@@ -49,8 +50,8 @@ class JapaneseWordForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.layout = Layout(
             Field('source'),
-            Field('mean'),
             Field('kanji'),
+            Field('mean'),
             Field('romaji'),
             Field('type'),
             Field('description', rows="3"),
@@ -89,9 +90,13 @@ class TestWordForm(forms.ModelForm):
         model = TestWord
         fields = ['title', 'words', 'start_date', 'completed_time']
 class TestingWordForm(forms.Form):
-    def __init__(self, current=1,  end=None, source_val=None, mean_val=None, kanji_val=None, *args, **kwargs):
+    def __init__(self, current=1, flag=False,  end=False, source_val=None, mean_val=None, kanji_val=None, *args, **kwargs):
         super(TestingWordForm, self).__init__(*args, **kwargs)
-        self.fields['mean'].widget.attrs.update({'autofocus': 'autofocus'})
+        if flag:
+            self.fields['source'].widget.attrs.update({'autofocus': 'autofocus'})
+        else:
+            self.fields['mean'].widget.attrs.update({'autofocus': 'autofocus'})
+
         self.helper=FormHelper()
         self.helper.form_class="form-horizontal"
         self.helper.action="POST"
@@ -113,9 +118,15 @@ class TestingWordForm(forms.Form):
                                     Submit('prev', 'Prev'),
                                     Submit('next', 'Next', css_class="btn-primary"),
                                 )
+        if flag:
+            source_field=Field('source', value=source_val or '')
+            mean_field=Field('mean', value=mean_val or '', disabled=True)
+        else:
+            source_field=Field('source', value=source_val or '', disabled=True)
+            mean_field=Field('mean', value=mean_val or '')
         self.helper.layout=Layout(
-                             Field('source', value=source_val or '', disabled=True),
-                             Field('mean', value=mean_val or ''),
+                             source_field,
+                             mean_field,
                              Field('kanji', value=kanji_val or ''),
                              form_submit_buttom
                              )

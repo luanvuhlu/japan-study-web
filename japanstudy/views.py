@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.list import ListView
@@ -114,9 +115,9 @@ def test_word_session(request, test_session_pk, order):
     end = (order == count_word)
     
     if request.method == 'POST':
-        testing_word, testing_word_created=TestingWord.objects.get_or_create(test_session=test_session, order=order, word=word)
-        source=request.POST.get('source')
-        mean=request.POST.get('mean')
+        testing_word=get_object_or_404(TestingWord, test_session=test_session, order=order, word=word)
+        source=testing_word.word.source if not testing_word.flag else request.POST.get('source')
+        mean=testing_word.word.mean if testing_word.flag else request.POST.get('mean')
         kanji=request.POST.get('kanji')
 
         testing_word.source=source.strip() if source else source
@@ -136,11 +137,11 @@ def test_word_session(request, test_session_pk, order):
             raise Http404('Invalid post!')
         return redirect('test-word-session', test_session_pk=test_session.id, order=new_order)
     else:
-        try:
-            testing_word_new=TestingWord.objects.get(test_session=test_session, order=order)
-            form=TestingWordForm(current=order, end=end, source_val=word.source, mean_val=testing_word_new.mean, kanji_val= testing_word_new.kanji)
-        except TestingWord.DoesNotExist:
-            form=TestingWordForm(end=end, current=order, source_val=word.source)                 
+        testing_word_new, testing_word_created=TestingWord.objects.get_or_create(test_session=test_session, order=order,  word=word)
+        if testing_word_created:
+            testing_word_new.flag=bool(random.getrandbits(1))
+            testing_word_new.save()
+        form=TestingWordForm(current=order, flag=testing_word_new.flag, end=end, source_val=word.source if not testing_word_new.flag else testing_word_new.source, mean_val=testing_word_new.mean if not testing_word_new.flag else word.mean, kanji_val= testing_word_new.kanji)
     return render(request, 'japanstudy/testing.html',{
                                                       'username':user.username,
                                                       'form':form,

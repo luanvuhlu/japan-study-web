@@ -15,11 +15,13 @@
 			Dajaxice.japanstudy.add_new_words(handleForm, {
 				'form' : $('#addJPWords').serialize(true)
 			});
+            $('#addJPWords')[0].reset();
+            $("#id_source").focus();
 		});
 		$('#save').click(function() {
 			Dajaxice.japanstudy.save_session(function(data) {
 				if (data == 'True') {
-					window.location.replace("/add-word-success");
+					window.location.replace("{% url 'add-japan-word' %}");
 				}
 			});
 		});

@@ -83,10 +83,11 @@ class TestSession(models.Model):
 class TestingWord(models.Model):
     word=models.ForeignKey(JapaneseWord, verbose_name="Từ gốc")
     source = models.CharField(max_length=200,null=True, blank=True, verbose_name="Từ")
-    mean = models.CharField(max_length=200, null=True,blank=True, verbose_name="Nghĩa")
     kanji = models.CharField(max_length=200, null=True,blank=True, verbose_name="Từ Kanji")
+    mean = models.CharField(max_length=200, null=True,blank=True, verbose_name="Nghĩa")
     added_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Ngày thêm")
     test_session = models.ForeignKey(TestSession, verbose_name="Phiên test")
     order=models.PositiveSmallIntegerField(verbose_name="Thứ tự")
+    flag=models.BooleanField(default=False, blank=True, verbose_name="Loại kiểm tra")
     def __unicode__(self):
         return unicode(self.word) or u''

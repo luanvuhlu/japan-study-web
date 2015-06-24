@@ -13,34 +13,57 @@
 	{% for tw in object_list %}
         <div class="row test-word-result">
             <div class="col-lg-4">
-                <strong>{{ tw.word.source }}</strong>
+                {% ifequal tw.source|lower tw.word.source|lower %}
+                    {{tw.word.source}}
+                {% else %}
+                    {% if tw.source %}
+                        <s>{{tw.source}}</s>
+                    {% else %}
+                        (empty)
+                    {% endif %}
+				{% endifequal %}
             </div>
+            <div class="col-lg-4">
+                {% ifequal tw.kanji|lower tw.word.kanji|lower %}
+                    {{tw.word.kanji}}
+                {% else %}
+                    {% if tw.kanji %}
+                        <s>{{tw.kanji}}</s>
+                    {% else %}
+                        (empty)
+                    {% endif %}
+				{% endifequal %}
+			</div>
 			<div class="col-lg-4">
 				{% ifequal tw.mean|lower tw.word.mean|lower %}
                     {{tw.word.mean}}
                 {% else %}
-                    <s>{{tw.mean}}</s>
+                    {% if tw.mean %}
+                        <s>{{tw.mean}}</s>
+                    {% else %}
+                        (empty)
+                    {% endif %}
 				{% endifequal %}
 			</div>
-			<div class="col-lg-4">
-                {% ifequal tw.kanji|lower tw.word.kanji|lower %}
-                    {{tw.word.kanji}}
-                {% else %}
-                    <s>{{tw.kanji}}</s>
-				{% endifequal %}
-			</div>
+
 		</div>
 		<div class="row test-word-source">
-			<div class="col-lg-offset-4 col-lg-4">
-				{% ifnotequal tw.mean|lower tw.word.mean|lower %}
-                    {{tw.word.mean}}
+            <div class="col-lg-4">
+				{% ifnotequal tw.source|lower tw.word.source|lower %}
+                    {{tw.word.source}}
 				{% endifnotequal %}
 			</div>
-			<div class="col-lg-4">
+            <div class="col-lg-4">
                 {% ifnotequal tw.kanji|lower tw.word.kanji|lower %}
                     {{tw.word.kanji}}
 				{% endifnotequal %}
 			</div>
+			<div class="col-lg-4">
+				{% ifnotequal tw.mean|lower tw.word.mean|lower %}
+                    {{tw.word.mean}}
+				{% endifnotequal %}
+			</div>
+
 
 		</div>
 

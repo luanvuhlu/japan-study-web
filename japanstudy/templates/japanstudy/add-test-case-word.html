@@ -10,6 +10,11 @@
 <script src="{% static "jquery-picklist/jquery.ui.widget.js" %}"></script>
 <script src="{% static "jquery-picklist/jquery-picklist.js" %}"></script>
 {% load dajaxice_templatetags %} {% dajaxice_js_import %}
+    <style >
+        ul.pickList_list{
+         min-height: 500px;
+        }
+    </style>
 <script>
 	$(document).ready(function() {
 		$('.datetimepicker').datetimepicker();
