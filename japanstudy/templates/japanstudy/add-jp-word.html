@@ -15,7 +15,8 @@
 			Dajaxice.japanstudy.add_new_words(handleForm, {
 				'form' : $('#addJPWords').serialize(true)
 			});
-            $('#addJPWords')[0].reset();
+            // $('#addJPWords')[0].reset();s
+            $("#addJPWords").find('input, textarea').val('');
             $("#id_source").focus();
 		});
 		$('#save').click(function() {

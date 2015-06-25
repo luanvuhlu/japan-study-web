@@ -53,6 +53,7 @@ class JapaneseWordForm(forms.ModelForm):
             Field('kanji'),
             Field('mean'),
             Field('romaji'),
+            Field('tags'),
             Field('type'),
             Field('description', rows="3"),
         #     FormActions(
@@ -63,7 +64,7 @@ class JapaneseWordForm(forms.ModelForm):
     )
     class Meta:
         model = JapaneseWord
-        fields = ['source', 'mean', 'kanji', 'romaji', 'type', 'description']
+        fields = ['source', 'mean', 'kanji', 'romaji', 'type', 'tags', 'description']
 class TestWordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TestWordForm, self).__init__(*args, **kwargs)

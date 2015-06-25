@@ -31,6 +31,7 @@ def add_japan_word_advance(request):
             word = form.save(commit=False)
             word.user = user
             word.save()
+            form.save_m2m()
             # form=JapaneseWordAdvanceForm(instance=word)
             form = JapaneseWordAdvanceForm()
         else:
@@ -58,6 +59,7 @@ def add_japan_word(request):
             word.user = user
             word.temp = True
             word.save()
+            form.save_m2m()
             # form=JapaneseWordAdvanceForm(instance=word)
             form = JapaneseWordForm()
         else:

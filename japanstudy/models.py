@@ -28,7 +28,7 @@ class Word(models.Model):
     active = models.CharField(max_length=2, choices=STATUS, default='Y', verbose_name="Trạng thái")
     temp = models.BooleanField(default=False, blank=False, verbose_name="Dữ liệu tạm")
     def __unicode__(self):
-        return self.source
+        return "%s - %s " % (self.source, self.mean)
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.id and len(Word.objects.filter(source=self.source, mean=self.mean)):
             return

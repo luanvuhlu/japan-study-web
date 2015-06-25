@@ -4,6 +4,24 @@
     <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
+    <table name="admin_tools_dashboard_preferences" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="data" sqlType="TEXT" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="dashboard_id" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_admin_tools_dashboard_preferences_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="admin_tools_dashboard_preferences_e8701ad4" unique="true" columns="user_id"/>
+    </table>
+    <table name="admin_tools_menu_bookmark" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="url" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="title" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_admin_tools_menu_bookmark_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="admin_tools_menu_bookmark_e8701ad4" unique="true" columns="user_id"/>
+    </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR(80)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
@@ -45,9 +63,12 @@
       <column name="date_joined" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="last_login" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <primary-key columns="id"/>
+      <exported-key name="#FAKE_admin_tools_dashboard_preferences_1" table="admin_tools_dashboard_preferences" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_admin_tools_menu_bookmark_1" table="admin_tools_menu_bookmark" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_japanstudy_addwordsession_1" table="japanstudy_addwordsession" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_japanstudy_tag_1" table="japanstudy_tag" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_japanstudy_testsession_1" table="japanstudy_testsession" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_japanstudy_testword_1" table="japanstudy_testword" schema="" catalog="" columns="user_id"/>
@@ -110,18 +131,43 @@
       <primary-key columns="session_key"/>
       <index name="django_session_de54fa62" unique="true" columns="expire_date"/>
     </table>
+    <table name="japanstudy_addwordsession" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="active" sqlType="VARCHAR(2)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="current" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_japanstudy_addwordsession_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_japanstudy_addwordsession_japanese_words_2" table="japanstudy_addwordsession_japanese_words" schema="" catalog="" columns="addwordsession_id"/>
+      <index name="japanstudy_addwordsession_e8701ad4" unique="true" columns="user_id"/>
+    </table>
+    <table name="japanstudy_addwordsession_japanese_words" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="addwordsession_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="japaneseword_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_japanstudy_addwordsession_japanese_words_1" columns="japaneseword_id" ref-table="japanstudy_japaneseword" ref-schema="" ref-catalog="" ref-columns="word_ptr_id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_japanstudy_addwordsession_japanese_words_2" columns="addwordsession_id" ref-table="japanstudy_addwordsession" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="japanstudy_addwordsession_japanese_words_3cdb6022" unique="true" columns="japaneseword_id"/>
+      <index name="japanstudy_addwordsession_japanese_words_8ae9e264" unique="true" columns="addwordsession_id"/>
+    </table>
     <table name="japanstudy_japaneseword" schema="" catalog="" type="TABLE">
       <column name="word_ptr_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="kanji" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="romaji" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="type" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="romaji" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <primary-key columns="word_ptr_id"/>
       <foreign-key name="#FAKE_japanstudy_japaneseword_1" columns="word_ptr_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_japanstudy_addwordsession_japanese_words_1" table="japanstudy_addwordsession_japanese_words" schema="" catalog="" columns="japaneseword_id"/>
+      <exported-key name="#FAKE_japanstudy_testingword_1" table="japanstudy_testingword" schema="" catalog="" columns="word_id"/>
+      <exported-key name="#FAKE_japanstudy_testsessionwordorder_1" table="japanstudy_testsessionwordorder" schema="" catalog="" columns="word_id"/>
+      <exported-key name="#FAKE_japanstudy_testword_words_1" table="japanstudy_testword_words" schema="" catalog="" columns="japaneseword_id"/>
     </table>
     <table name="japanstudy_tag" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
-      <column name="description" sqlType="TEXT" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="active" sqlType="VARCHAR(2)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="created_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
@@ -130,80 +176,102 @@
       <exported-key name="#FAKE_japanstudy_word_tags_1" table="japanstudy_word_tags" schema="" catalog="" columns="tag_id"/>
       <index name="japanstudy_tag_e8701ad4" unique="true" columns="user_id"/>
     </table>
-    <table name="japanstudy_testresult" schema="" catalog="" type="TABLE">
+    <table name="japanstudy_testingword" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="source" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="mean" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="kanji" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="added_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="order" sqlType="SMALLINT UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="test_session_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="correct" sqlType="SMALLINT UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="incorrect" sqlType="SMALLINT UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="break_words" sqlType="SMALLINT UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="created_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_japanstudy_testresult_1" columns="test_session_id" ref-table="japanstudy_testsession" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="japanstudy_testresult_0c1b615c" unique="true" columns="test_session_id"/>
+      <foreign-key name="#FAKE_japanstudy_testingword_1" columns="word_id" ref-table="japanstudy_japaneseword" ref-schema="" ref-catalog="" ref-columns="word_ptr_id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_japanstudy_testingword_2" columns="test_session_id" ref-table="japanstudy_testsession" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="japanstudy_testingword_83ca49d0" unique="true" columns="word_id"/>
+      <index name="japanstudy_testingword_0c1b615c" unique="true" columns="test_session_id"/>
     </table>
     <table name="japanstudy_testsession" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="test_word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="current_word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="start" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="end" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="created_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="test_word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="completed" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="completed_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_japanstudy_testsession_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <foreign-key name="#FAKE_japanstudy_testsession_2" columns="current_word_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <foreign-key name="#FAKE_japanstudy_testsession_3" columns="test_word_id" ref-table="japanstudy_testword" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <exported-key name="#FAKE_japanstudy_testresult_1" table="japanstudy_testresult" schema="" catalog="" columns="test_session_id"/>
-      <exported-key name="#FAKE_japanstudy_wordtesting_2" table="japanstudy_wordtesting" schema="" catalog="" columns="test_session_id"/>
+      <foreign-key name="#FAKE_japanstudy_testsession_2" columns="test_word_id" ref-table="japanstudy_testword" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_japanstudy_testingword_2" table="japanstudy_testingword" schema="" catalog="" columns="test_session_id"/>
+      <exported-key name="#FAKE_japanstudy_testsession_test_session_word_orders_2" table="japanstudy_testsession_test_session_word_orders" schema="" catalog="" columns="testsession_id"/>
       <index name="japanstudy_testsession_e8701ad4" unique="true" columns="user_id"/>
-      <index name="japanstudy_testsession_ce0ab2b0" unique="true" columns="current_word_id"/>
       <index name="japanstudy_testsession_6205d90f" unique="true" columns="test_word_id"/>
+    </table>
+    <table name="japanstudy_testsession_test_session_word_orders" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="testsession_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="testsessionwordorder_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_japanstudy_testsession_test_session_word_orders_1" columns="testsessionwordorder_id" ref-table="japanstudy_testsessionwordorder" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_japanstudy_testsession_test_session_word_orders_2" columns="testsession_id" ref-table="japanstudy_testsession" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="japanstudy_testsession_test_session_word_orders_07107c23" unique="true" columns="testsessionwordorder_id"/>
+      <index name="japanstudy_testsession_test_session_word_orders_324943cb" unique="true" columns="testsession_id"/>
+    </table>
+    <table name="japanstudy_testsessionwordorder" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="order" sqlType="SMALLINT UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="current" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="correct" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="completed" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="start" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="end" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_japanstudy_testsessionwordorder_1" columns="word_id" ref-table="japanstudy_japaneseword" ref-schema="" ref-catalog="" ref-columns="word_ptr_id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_japanstudy_testsession_test_session_word_orders_1" table="japanstudy_testsession_test_session_word_orders" schema="" catalog="" columns="testsessionwordorder_id"/>
+      <index name="japanstudy_testsessionwordorder_83ca49d0" unique="true" columns="word_id"/>
     </table>
     <table name="japanstudy_testword" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="start_date" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="completed_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="created_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
-      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="active" sqlType="VARCHAR(2)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
-      <column name="title" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="title" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_japanstudy_testword_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <exported-key name="#FAKE_japanstudy_testsession_3" table="japanstudy_testsession" schema="" catalog="" columns="test_word_id"/>
+      <exported-key name="#FAKE_japanstudy_testsession_2" table="japanstudy_testsession" schema="" catalog="" columns="test_word_id"/>
       <exported-key name="#FAKE_japanstudy_testword_words_2" table="japanstudy_testword_words" schema="" catalog="" columns="testword_id"/>
       <index name="japanstudy_testword_e8701ad4" unique="true" columns="user_id"/>
     </table>
     <table name="japanstudy_testword_words" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="testword_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="japaneseword_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_japanstudy_testword_words_1" columns="word_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_japanstudy_testword_words_1" columns="japaneseword_id" ref-table="japanstudy_japaneseword" ref-schema="" ref-catalog="" ref-columns="word_ptr_id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_japanstudy_testword_words_2" columns="testword_id" ref-table="japanstudy_testword" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="japanstudy_testword_words_83ca49d0" unique="true" columns="word_id"/>
+      <index name="japanstudy_testword_words_3cdb6022" unique="true" columns="japaneseword_id"/>
       <index name="japanstudy_testword_words_5f382a26" unique="true" columns="testword_id"/>
     </table>
     <table name="japanstudy_word" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="source" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="mean" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
-      <column name="level" sqlType="SMALLINTUNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="description" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="created_time" sqlType="NUMERIC" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="active" sqlType="VARCHAR(2)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
-      <column name="example" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="title" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="other_mean" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="level" sqlType="SMALLINT UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="example" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="created_time" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="active" sqlType="VARCHAR(2)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="temp" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_japanstudy_word_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_japanstudy_japaneseword_1" table="japanstudy_japaneseword" schema="" catalog="" columns="word_ptr_id"/>
-      <exported-key name="#FAKE_japanstudy_testsession_2" table="japanstudy_testsession" schema="" catalog="" columns="current_word_id"/>
-      <exported-key name="#FAKE_japanstudy_testword_words_1" table="japanstudy_testword_words" schema="" catalog="" columns="word_id"/>
       <exported-key name="#FAKE_japanstudy_word_sames_1" table="japanstudy_word_sames" schema="" catalog="" columns="to_word_id"/>
       <exported-key name="#FAKE_japanstudy_word_sames_2" table="japanstudy_word_sames" schema="" catalog="" columns="from_word_id"/>
       <exported-key name="#FAKE_japanstudy_word_tags_2" table="japanstudy_word_tags" schema="" catalog="" columns="word_id"/>
-      <exported-key name="#FAKE_japanstudy_wordtesting_1" table="japanstudy_wordtesting" schema="" catalog="" columns="word_id"/>
       <index name="japanstudy_word_e8701ad4" unique="true" columns="user_id"/>
     </table>
     <table name="japanstudy_word_sames" schema="" catalog="" type="TABLE">
@@ -213,8 +281,6 @@
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_japanstudy_word_sames_1" columns="to_word_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_japanstudy_word_sames_2" columns="from_word_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="japanstudy_word_sames_ccb71746" unique="true" columns="to_word_id"/>
-      <index name="japanstudy_word_sames_1b64ec3f" unique="true" columns="from_word_id"/>
     </table>
     <table name="japanstudy_word_tags" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
@@ -223,22 +289,6 @@
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_japanstudy_word_tags_1" columns="tag_id" ref-table="japanstudy_tag" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_japanstudy_word_tags_2" columns="word_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="japanstudy_word_tags_76f094bc" unique="true" columns="tag_id"/>
-      <index name="japanstudy_word_tags_83ca49d0" unique="true" columns="word_id"/>
-    </table>
-    <table name="japanstudy_wordtesting" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="test_session_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="word_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="start" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="end" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="correct" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="complete" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_japanstudy_wordtesting_1" columns="word_id" ref-table="japanstudy_word" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <foreign-key name="#FAKE_japanstudy_wordtesting_2" columns="test_session_id" ref-table="japanstudy_testsession" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="japanstudy_wordtesting_83ca49d0" unique="true" columns="word_id"/>
-      <index name="japanstudy_wordtesting_0c1b615c" unique="true" columns="test_session_id"/>
     </table>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
       <column name="name" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>

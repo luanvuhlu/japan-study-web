@@ -12,7 +12,7 @@ class JapaneseWordAdmin(BaseAdmin):
     date_hierarchy='created_time'
     list_filter=('created_time', )
     search_fields=['source', 'mean', 'kanji', 'other_mean', 'created_time']
-    ordering = ('-active', 'level', 'created_time', )
+    ordering = ('-created_time', '-active', 'level', )
     def save_model(self, request, obj, form, change):
         if not obj.id:
             obj.user=request.user
