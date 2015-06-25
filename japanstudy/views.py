@@ -7,21 +7,21 @@ from django.utils import timezone
 from japanstudy.forms import JapaneseWordAdvanceForm, JapaneseWordForm, TestWordForm,\
     TestingWordForm
 from japan.utils import get_user
-from models import AddWordSession
+from models import AddWordSession, JapaneseWord
 
 import logging
 from japanstudy.models import TestWord, TestSession, TestSessionWordOrder,\
-    TestingWord
+    TestingWord, JapaneseWord
 log = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
     form = JapaneseWordAdvanceForm()
     return render(request, "japanstudy/index.html", {})
-def add_japan_word_advance2(request):
-    form = JapaneseWordAdvanceForm()
-    return render(request, "japanstudy/add-jp-word-advance.html", {
-        'form':form,
-    })
+# def add_japan_word_advance2(request):
+#     form = JapaneseWordAdvanceForm()
+#     return render(request, "japanstudy/add-jp-word-advance.html", {
+#         'form':form,
+#     })
 def add_japan_word_advance(request):
     user = get_user(request)
     if request.method == 'POST':
@@ -166,4 +166,14 @@ class TestSessionListView(ListView):
         user=get_user(self.request)
         qs = super(TestSessionListView, self).get_queryset()
         return qs.filter(completed=True, user=user)
+class JapaneseWordListView(ListView):
+    model=JapaneseWord
+    template_name = 'japanstudy/japaneseword_list.html'
+    def get_context_data(self, **kwargs):
+        context=super(JapaneseWordListView, self).get_context_data(**kwargs)
+        return context
+    def get_queryset(self):
+        user=get_user(self.request)
+        qs = super(JapaneseWordListView, self).get_queryset()
+        return qs.filter(active='Y', user=user).order_by('-created_time')
     

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load my_filters %} 
+{% block title %}Japanese words list{% endblock %}
+{% block static %}
+<style>
+.test-word-rows{
+font-size: 25px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<!-- <div class="row"> -->
+<!-- 	<div class="col-md-12"> -->
+<!-- 		<h3 class="form-title text-center" style="padding: 20px;">Japanese words list</h3> -->
+<!-- 	</div> -->
+<!-- </div> -->
+<div class="row">
+	<div class="col-lg-12">
+	{% for w in object_list %}
+		<div class="row test-word-rows">
+			<div class="col-lg-4 col-md-4 col-sm-4">
+				<strong>{{w.source}}</strong>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4">
+				<strong>{{w.kanji}}</strong>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4">
+				{{w.mean|upfirstletter}}
+			</div>
+		</div>
+	{%	empty %}
+		No Word yet.</li>
+	{% endfor %}
+	</div>
+</div>
+{% endblock %}

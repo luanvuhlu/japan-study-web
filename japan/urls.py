@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
 import settings
-from japanstudy.views import TestWordListView, TestingWordResultView, TestSessionListView
+from japanstudy.views import TestWordListView, TestingWordResultView, TestSessionListView, JapaneseWordListView
 admin.autodiscover()
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 dajaxice_autodiscover()
@@ -26,7 +26,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^add-word$', 'japanstudy.views.add_japan_word', name='add-japan-word'),
-    url(r'add-word-advance', 'japanstudy.views.add_japan_word_advance2', name='add-japan-word-advance'),
+    url(r'add-word-advance', 'japanstudy.views.add_japan_word_advance', name='add-japan-word-advance'),
+    url(r'words-list', JapaneseWordListView.as_view(), name='words-list'),
     url(r'^$', 'japanstudy.views.home', name='home'),
     url(r'^add-word-success', 'japanstudy.views.add_word_success', name='add_word_success'),
     url(r'^add-test-case', 'japanstudy.views.add_test_case', name='add-test-case'),
