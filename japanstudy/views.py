@@ -143,7 +143,7 @@ def test_word_session(request, test_session_pk, order):
         if testing_word_created:
             testing_word_new.flag=bool(random.getrandbits(1))
             testing_word_new.save()
-        form=TestingWordForm(current=order, flag=testing_word_new.flag, end=end, source_val=word.source if not testing_word_new.flag else testing_word_new.source, mean_val=testing_word_new.mean if not testing_word_new.flag else word.mean, kanji_val= testing_word_new.kanji)
+        form=TestingWordForm(current=order, flag=testing_word_new.flag, end=end, source_val=word.source if not testing_word_new.flag else testing_word_new.source, mean_val=testing_word_new.mean if not testing_word_new.flag else word.mean, kanji_val= testing_word_new.kanji, description_val=word.description)
     return render(request, 'japanstudy/testing.html',{
                                                       'username':user.username,
                                                       'form':form,

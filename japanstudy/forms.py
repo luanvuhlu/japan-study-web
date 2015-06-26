@@ -91,7 +91,7 @@ class TestWordForm(forms.ModelForm):
         model = TestWord
         fields = ['title', 'words', 'start_date', 'completed_time']
 class TestingWordForm(forms.Form):
-    def __init__(self, current=1, flag=False,  end=False, source_val=None, mean_val=None, kanji_val=None, *args, **kwargs):
+    def __init__(self, current=1, flag=False,  end=False, source_val=None, mean_val=None, kanji_val=None, description_val=None, *args, **kwargs):
         super(TestingWordForm, self).__init__(*args, **kwargs)
         if flag:
             self.fields['source'].widget.attrs.update({'autofocus': 'autofocus'})
@@ -129,10 +129,12 @@ class TestingWordForm(forms.Form):
                              source_field,
                              mean_field,
                              Field('kanji', value=kanji_val or ''),
+                             Field('description', value=description_val or '', disabled=True),
                              form_submit_buttom
                              )
     source=forms.CharField(max_length=200, required=False)
     mean=forms.CharField(max_length=200, required=False)
     kanji=forms.CharField(max_length=200, required=False)
+    description=forms.CharField(max_length=500, required=False)
     
     
